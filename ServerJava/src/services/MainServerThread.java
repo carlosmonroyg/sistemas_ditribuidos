@@ -7,26 +7,24 @@ import java.net.Socket;
 public class MainServerThread {
 
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
-		
-		
-		
+
 		ServerSocket ss = new ServerSocket(1234);
-		System.out.println("Server>Running");
-		
+		System.out.println("Server> running");
+
 		int idClient = 0;
+
 		while(true) {
-			
-			Socket s = new Socket();
-			
-			s = ss.accept();
-			
-			
-			
-			ServerThread serverThread = new ServerThread(s, idClient);
-			serverThread.start();
-			idClient ++;
-			
+
+			try {
+				Socket s = new Socket();
+				s = ss.accept();
+				((ServerThread) new ServerThread(s, idClient)).start();
+
+				idClient ++;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		}
 	}
 

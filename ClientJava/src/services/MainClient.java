@@ -7,7 +7,7 @@ public class MainClient {
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		System.out.println("client>Running");
 			Client client = new Client();
-			client.onClient(1);
+			client.onClient(1069738522);
 		
 	}
 }

@@ -9,45 +9,44 @@ import data.Persona;
 
 public class ServerThread extends Thread{
 
-	private Socket s;
-	private ObjectInputStream ois;
-	private ObjectOutputStream oos;
-	
+	protected Socket s;
+	protected ObjectInputStream ois;
+	protected ObjectOutputStream oos;
+
 	private int idClient;
-	
 
-
-	public ServerThread(Socket s, int idClient) throws IOException {
+	public ServerThread(Socket s, int idClient){
 		this.s = s;
 		this.idClient = idClient;
-		ois = new ObjectInputStream(s.getInputStream());
-		oos = new ObjectOutputStream(s.getOutputStream());
 		
+		try {
+			ois = new ObjectInputStream(s.getInputStream());
+			oos = new ObjectOutputStream(s.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override
 	public void run() {
-
-		try {
-			System.out.println("client>"+idClient +"Started");
+		do {
 			Persona persona = new Persona();
-			
-			
-			persona = (Persona)ois.readObject();
-			
-			System.out.println("Object>"+persona +"Started");
-			oos.writeObject("Server>...persona"+persona.getIdentificacion()+"recived");
-			
-			s.close();
+			try {
 
+				persona = (Persona)ois.readObject();
+				System.out.println("Server> "+persona);
 
-		} catch (Exception e)  {
-			System.out.println("Server> "+e.getMessage());
-		}		
+				oos.writeObject("Server> object recived");
 
-
+			} catch (Exception e) {
+				break;
+			}		
+		}while(true);
+		
+		try {s.close();} catch (IOException e) {e.printStackTrace();}
 	}
-
-
-
 }
+
+
+
