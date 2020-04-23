@@ -1,6 +1,8 @@
 package data;
 
-public class Persona  {
+import java.io.Serializable;
+
+public class Persona implements Serializable{
 	
 	private int identificacion;
 	private String nombre;
@@ -49,5 +51,4 @@ public class Persona  {
 		return "Persona [identificacion=" + identificacion + ", nombre=" + nombre + ", edad=" + edad + ", sexo=" + sexo
 				+ "]";
 	}
-
 }

@@ -5,6 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import data.Empleado;
+import data.Estudiante;
 import data.Persona;
 
 public class ServerThread extends Thread{
@@ -31,17 +33,29 @@ public class ServerThread extends Thread{
 	@Override
 	public void run() {
 		do {
-			Persona persona = new Persona();
 			try {
-
+				Persona persona = new Persona();
 				persona = (Persona)ois.readObject();
 				System.out.println("Server> "+persona);
-
-				oos.writeObject("Server> object recived");
-
+				oos.writeObject("Server> Object recived");
 			} catch (Exception e) {
-				break;
-			}		
+				try {
+					Empleado empleado = new Empleado();
+					empleado = (Empleado)ois.readObject();
+					System.out.println("Server> "+empleado);
+					oos.writeObject("Server> Empleado recived");
+				} catch (Exception e2) {
+					try {
+						Estudiante estudiante = new Estudiante();
+						estudiante = (Estudiante)ois.readObject();
+						System.out.println("Server> "+estudiante);
+						oos.writeObject("Server> Estudiante recived");
+					} catch (Exception e3) {
+						break;
+					}
+				}
+			}
+				
 		}while(true);
 		
 		try {s.close();} catch (IOException e) {e.printStackTrace();}
